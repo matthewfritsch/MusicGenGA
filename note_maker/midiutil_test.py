@@ -3,7 +3,7 @@ from midiutil import MIDIFile
 degrees  = [60, 62, 64, 65, 67, 69, 71, 72] # MIDI note number
 track    = 0
 channel  = 0
-time     = 0   # In beats
+time     = 0   # In beats (used to control when to play the next note)
 duration = 1   # In beats
 tempo    = 60  # In BPM
 volume   = 100 # 0-127, as per the MIDI standard
