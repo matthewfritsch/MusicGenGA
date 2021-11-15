@@ -1,2 +1,3 @@
 *.wav
 *.mp3
+midi_test/__pycache__
