@@ -12,11 +12,28 @@ MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track
                      # automatically created)
 MyMIDI.addTempo(track,time, tempo)
 
-for pitch in degrees:
-    #MyMIDI.addNote(track, channel, pitch, time, duration, volume)
-    MyMIDI.addNote(track, channel, degrees[random.randint(0,len(degrees)-1)], time, duration, volume)
-    time = time + 1
+MyMIDI.addNote(track, channel, degrees[0], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[2], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
+time = time + 1
+MyMIDI.addNote(track, channel, degrees[1], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[3], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[5], time, duration, volume)
+time = time + 1
+MyMIDI.addNote(track, channel, degrees[0], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[2], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
+time = time + 1
+MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[6], time, duration, volume)
+MyMIDI.addNote(track, channel, degrees[0], time, duration, volume)
 
+'''
+for pitch in degrees:
+    MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+    #MyMIDI.addNote(track, channel, degrees[random.randint(0,len(degrees)-1)], time, duration, volume)
+    time = time + 1
+'''
 with open("major-scale.mid", "wb") as output_file:
     MyMIDI.writeFile(output_file)
 
