@@ -1,7 +1,7 @@
 from midiutil import MIDIFile
 import random
-import _util
-degrees  = [60, 62, 64, 65, 67, 69, 71, 72] # MIDI note number in the 5th octave
+from _util import *
+degrees  = [60, 62, 64, 65, 67, 69, 71] # MIDI note number in the 5th octave
 track    = 0
 channel  = 0
 time     = 0   # In beats (used to control when to play the next note)
@@ -14,17 +14,11 @@ MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track
 MyMIDI.addTempo(track,time, tempo)
 
 # C major chord C, E, G
-MyMIDI.addNote(track, channel, degrees[0], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[2], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
+add_notes(MyMIDI, track, channel, major_triad(note("C", 5)), time, duration, volume)
 time = time + 1
-MyMIDI.addNote(track, channel, degrees[1], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[3], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[5], time, duration, volume)
+add_notes(MyMIDI, track, channel, minor_triad(note("D", 5)), time, duration, volume)
 time = time + 1
-MyMIDI.addNote(track, channel, degrees[0], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[2], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
+add_notes(MyMIDI, track, channel, major_triad(note("C", 5)), time, duration, volume)
 time = time + 1
 MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
 MyMIDI.addNote(track, channel, degrees[6], time, duration, volume)

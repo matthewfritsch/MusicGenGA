@@ -1,4 +1,5 @@
 import random
+from midiutil import MIDIFile
 
 notes = {
     "C": 0,
@@ -21,8 +22,15 @@ notes = {
 def note(Letter, Octave):
     return notes.get(Letter) + (Octave * 12)
 
+def random_root():
+    return random.randint(0, 127-11)
+
 def note_names():
     return notes.keys()
+
+def add_notes(midi, track, channel, notes, time, duration, volume):
+    for note in notes:
+        midi.addNote(track, channel, note, time, duration, volume)
 
 def random_chord(root):
     return random.choice(chords)(root)
@@ -99,12 +107,6 @@ def dominant_seventh_flat_two(root):
 def dominant_seventh_sharp_two(root):
     return [root, root + 4, root + 8, root + 9]
 
-def minor_major_seventh_flat_two(root):
-    return [root, root + 3, root + 6, root + 9]
-
-def minor_major_seventh_sharp_two(root):
-    return [root, root + 3, root + 8, root + 9]
-
 def diminished_seventh_flat_two(root):
     return [root, root + 3, root + 6, root + 9]
 
@@ -153,4 +155,4 @@ def suspended_fourth_flat_three(root):
 def suspended_fourth_sharp_three(root):
     return [root, root + 5, root + 8, root + 1]
 
-chords = [major_triad, minor_triad, major_seventh, minor_seventh, major_sixth, minor_sixth, dominant_seventh, minor_major_seventh, diminished_seventh, augmented_seventh, suspended_fourth, suspended_second, suspended_fourth_seventh, suspended_second_seventh, dominant_seventh_flat_five, dominant_seventh_sharp_five, dominant_seventh_flat_nine, dominant_seventh_sharp_nine, major_triad_flat_nine, major_triad_sharp_nine, minor_triad_flat_nine, minor_triad_sharp_nine, dominant_seventh_flat_two, dominant_seventh_sharp_two, minor_major_seventh_flat_two, minor_major_seventh_sharp_two, diminished_seventh_flat_two, diminished_seventh_sharp_two, augmented_seventh_flat_two, augmented_seventh_sharp_two, suspended_fourth_flat_two, suspended_fourth_sharp_two, suspended_second_flat_two, suspended_second_sharp_two, dominant_seventh_flat_three, dominant_seventh_sharp_three, diminished_seventh_flat_three, diminished_seventh_sharp_three, augmented_seventh_flat_three, augmented_seventh_sharp_three, suspended_fourth_flat_three, suspended_fourth_sharp_three]
+chords = [major_triad, minor_triad, major_seventh, minor_seventh, major_sixth, minor_sixth, dominant_seventh, minor_major_seventh, diminished_seventh, augmented_seventh, suspended_fourth, suspended_second, suspended_fourth_seventh, suspended_second_seventh, dominant_seventh_flat_five, dominant_seventh_sharp_five, dominant_seventh_flat_nine, dominant_seventh_sharp_nine, major_triad_flat_nine, major_triad_sharp_nine, minor_triad_flat_nine, minor_triad_sharp_nine, dominant_seventh_flat_two, dominant_seventh_sharp_two, diminished_seventh_flat_two, diminished_seventh_sharp_two, augmented_seventh_flat_two, augmented_seventh_sharp_two, suspended_fourth_flat_two, suspended_fourth_sharp_two, suspended_second_flat_two, suspended_second_sharp_two, dominant_seventh_flat_three, dominant_seventh_sharp_three, diminished_seventh_flat_three, diminished_seventh_sharp_three, augmented_seventh_flat_three, augmented_seventh_sharp_three, suspended_fourth_flat_three, suspended_fourth_sharp_three]
