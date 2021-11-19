@@ -20,9 +20,7 @@ add_notes(MyMIDI, track, channel, minor_triad(note("D", 5)), time, duration, vol
 time = time + 1
 add_notes(MyMIDI, track, channel, major_triad(note("C", 5)), time, duration, volume)
 time = time + 1
-MyMIDI.addNote(track, channel, degrees[4], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[6], time, duration, volume)
-MyMIDI.addNote(track, channel, degrees[0], time, duration, volume)
+add_notes(MyMIDI, track, channel, major_seventh_suspended(note("C", 5)), time, duration, volume)
 
 '''
 for pitch in degrees:

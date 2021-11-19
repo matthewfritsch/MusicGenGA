@@ -70,6 +70,9 @@ def suspended_second(root):
 
 common_chords = [major_triad, minor_triad, major_seventh, minor_seventh, major_sixth, minor_sixth, dominant_seventh, diminished_seventh, augmented_seventh, suspended_fourth, suspended_second]
 
+def major_seventh_suspended(root):
+    return [root, root + 7, root + 11]
+
 def dominant_seventh_flat_five(root):
     return [root, root + 4, root + 6, root + 10]
 
