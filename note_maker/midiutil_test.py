@@ -14,11 +14,11 @@ MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track
 MyMIDI.addTempo(track,time, tempo)
 
 add_notes(MyMIDI, track, channel, major_triad(note("C", 5)), time, duration, volume)
-time = time + 1
+time += 1
 add_notes(MyMIDI, track, channel, minor_triad(note("D", 5)), time, duration, volume)
-time = time + 1
+time += 1
 add_notes(MyMIDI, track, channel, major_triad(note("C", 5)), time, duration, volume)
-time = time + 1
+time += 1
 add_notes(MyMIDI, track, channel, major_seventh_suspended(note("C", 5)), time, duration, volume)
 
 '''
