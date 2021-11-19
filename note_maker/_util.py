@@ -18,3 +18,6 @@ notes = {
 # Octaves range from 0 to 10
 def note(Letter, Octave):
     return notes.get(Letter) + (Octave * 12)
+
+def note_names():
+    return notes.keys()
