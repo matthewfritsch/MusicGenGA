@@ -32,8 +32,8 @@ def add_notes(midi, track, channel, notes, time, duration, volume):
     for note in notes:
         midi.addNote(track, channel, note, time, duration, volume)
 
-def random_chord(root):
-    return random.choice(chords)(root)
+def random_common_chord(root):
+    return random.choice(common_chords)(root)
 
 def major_triad(root):
     return [root, root + 4, root + 7]
@@ -56,9 +56,6 @@ def minor_sixth(root):
 def dominant_seventh(root):
     return [root, root + 4, root + 7, root + 10]
 
-def minor_major_seventh(root):
-    return [root, root + 3, root + 7, root + 11]
-
 def diminished_seventh(root):
     return [root, root + 3, root + 6, root + 10]
 
@@ -71,11 +68,7 @@ def suspended_fourth(root):
 def suspended_second(root):
     return [root, root + 1, root + 7]
 
-def suspended_fourth_seventh(root):
-    return [root, root + 5, root + 7, root + 10]
-
-def suspended_second_seventh(root):
-    return [root, root + 1, root + 7, root + 10]
+common_chords = [major_triad, minor_triad, major_seventh, minor_seventh, major_sixth, minor_sixth, dominant_seventh, diminished_seventh, augmented_seventh, suspended_fourth, suspended_second]
 
 def dominant_seventh_flat_five(root):
     return [root, root + 4, root + 6, root + 10]
@@ -154,5 +147,3 @@ def suspended_fourth_flat_three(root):
 
 def suspended_fourth_sharp_three(root):
     return [root, root + 5, root + 8, root + 1]
-
-chords = [major_triad, minor_triad, major_seventh, minor_seventh, major_sixth, minor_sixth, dominant_seventh, minor_major_seventh, diminished_seventh, augmented_seventh, suspended_fourth, suspended_second, suspended_fourth_seventh, suspended_second_seventh, dominant_seventh_flat_five, dominant_seventh_sharp_five, dominant_seventh_flat_nine, dominant_seventh_sharp_nine, major_triad_flat_nine, major_triad_sharp_nine, minor_triad_flat_nine, minor_triad_sharp_nine, dominant_seventh_flat_two, dominant_seventh_sharp_two, diminished_seventh_flat_two, diminished_seventh_sharp_two, augmented_seventh_flat_two, augmented_seventh_sharp_two, suspended_fourth_flat_two, suspended_fourth_sharp_two, suspended_second_flat_two, suspended_second_sharp_two, dominant_seventh_flat_three, dominant_seventh_sharp_three, diminished_seventh_flat_three, diminished_seventh_sharp_three, augmented_seventh_flat_three, augmented_seventh_sharp_three, suspended_fourth_flat_three, suspended_fourth_sharp_three]
