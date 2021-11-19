@@ -21,13 +21,16 @@ add_notes(MyMIDI, track, channel, major_triad(note("C", 5)), time, duration, vol
 time += 1
 add_notes(MyMIDI, track, channel, major_seventh_suspended(note("C", 5)), time, duration, volume)
 
+for i in range(10):
+    add_notes(MyMIDI, track, channel, random_common_chord(random_root()), time + i, duration, volume)
+
 '''
 for pitch in degrees:
     MyMIDI.addNote(track, channel, pitch, time, duration, volume)
     #MyMIDI.addNote(track, channel, degrees[random.randint(0,len(degrees)-1)], time, duration, volume)
     time = time + 1
 '''
-with open("major-scale.mid", "wb") as output_file:
+with open("rand-test.mid", "wb") as output_file:
     MyMIDI.writeFile(output_file)
 
 '''
