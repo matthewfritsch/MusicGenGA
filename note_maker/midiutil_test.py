@@ -59,4 +59,6 @@ Fitness stuff:
     chords 4 and 5 can substitute for each other
     chord 2 can sometimes be used instead of chord 4 or 5 (rarely)
     Never want to have more than 4 notes happen at one time (snare drum is included in that 4)
+
+    We also want to limit repititon of stuff too
 '''
