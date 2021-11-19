@@ -32,6 +32,10 @@ def add_notes(midi, track, channel, notes, time, duration, volume):
     for note in notes:
         midi.addNote(track, channel, note, time, duration, volume)
 
+def random_note():
+    lst = list(notes.items())
+    return (random.choice(lst)[1])
+
 def random_common_chord(root):
     return random.choice(common_chords)(root)
 
