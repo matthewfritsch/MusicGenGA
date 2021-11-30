@@ -1,3 +1,8 @@
 *.wav
 *.mp3
 note_maker/__pycache__
+note_maker/mido_test.py
+note_maker/library_notes.txt
+note_maker/*.mid
+.idea
+.idea/*
