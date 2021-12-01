@@ -234,7 +234,6 @@ major_prog = [i_v_vi_iv, i_v_vi_iii_iv_i_iv_v]
 # TODO: bridge_prog
 major_bridge= [vi_iii_iv_i_vi_ii_iv_v, vi_ii_vi_ii_iv_i_iv_v]
 
-
 def get_random_letter():
     return random.choice(list(note_names()))
 
@@ -252,3 +251,9 @@ def replace_item_with_list(listlist):
         for jdx in range(len(lst)):
             lst[jdx] = [lst[jdx]]
     return listlist
+
+def user_chose_major():
+    key = ''
+    while key not in ['major', 'minor']:
+        key = input('Please select a key for your song.\nEnter \'major\' or \'minor\': ').lower()
+    return key == 'major'

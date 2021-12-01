@@ -4,7 +4,7 @@ from _util import *
 
 # metadata that holds basic info about the song
 metadata = {
-    'NOTES_PER_SONG': 60,
+    'NOTES_PER_SONG': 4,
     'DEFAULT_TEMPO': 60,
     'USER_KEY_MAJOR': True,
     'TEMPOS': [30, 60, 120],
@@ -12,6 +12,26 @@ metadata = {
     'ROOT': random_root()
 }
 
+class Track:
+    def __init__(self, track_features, track_tempo):
+        self.features = track_features
+        self.tempo = track_tempo
+
+#Song is an object that contains features of a MIDI song
+class Song:
+    def __init__(self, **track_info):
+        self.vars = []
+        for key,value in track_info.items():
+            self.vars.append(key)
+            setattr(self, key, value)
+
+    def to_list(self):
+        return [getattr(self, varname) for varname in self.vars]
+
+    def tempo_list(self):
+        return [4, 1, 'appreg']
+
+#Song_Generator is an object that generates a MIDI object and writes song features to a MIDI file.
 class Song_Generator:
 
     myMIDI = None
@@ -19,6 +39,10 @@ class Song_Generator:
     # on creation of Song_Generator, set the user key from their input
     def __init__(self, user_key_major):
         metadata['USER_KEY_MAJOR'] = user_key_major
+
+    def create_MIDI(self, song_obj, filename):
+        self.generate_MIDI(song_obj.to_list(), steps=song_obj.tempo_list())
+        self.write_song_to_file(filename)
 
     # local function for adding notes
     def _add_notes(self, midi, track, channel, notes_t, time, duration, volume):
@@ -84,56 +108,49 @@ class Song_Generator:
 
         self.myMIDI = MyMIDI
 
-    def generate_MIDI_with_bass(self, song, bass, channel=0, tracks=2, duration=1, times=[0], tempos=[60], volume=100):
-        MyMIDI = MIDIFile(tracks)
-        MyMIDI.addTempo(0, 0, 60)
-        self._add_song_to_MIDI(MyMIDI, song, 0, 0, 0, duration, volume, 4)
-        MyMIDI.addTempo(1, 0, 60)
-        for i in range(tempos[0]):
-            self._add_song_to_MIDI(MyMIDI, bass, 1, 0, i*4, duration, volume, 1)
-        self.myMIDI = MyMIDI
-
 
 class Chunk_Generator:
 
+    # The function for generating an individual chunk of song
+    def make_chunk(self, root=metadata['ROOT'], type='verse',verbose=False):
+        if type == 'verse':
+            return self._make_verse(root=root, verbose=verbose)
+        return self._make_bridge(root=root, verbose=verbose)
+
+    # returns a random progression, dependent on 'major' value
     def _get_random_prog(self, major=True):
         if major:
             return random_major_prog(note_in_octs_l(get_random_letter(), 2, 3))
         return random_minor_prog(note_in_octs_l(get_random_letter(), 2, 3))
 
-    def _get_random_chord(self, bass, major=True, reverse_chance=0.9):
-        to_ret = [[random_major_chord(note_in_octs_n(n[0], 4, 5))] for n in bass]
-        if not major: 
-            to_ret = [[random_minor_chord(note_in_octs_n(n[0], 4, 5))] for n in bass]
-                # check if we want to reverse the appregio
+
+    def _get_random_chord(self, bass, major=True, reverse_chance=0.5):
+        if major:
+            to_ret = [random_major_chord(note_in_octs_n(n[0], 4, 5)) for n in bass]
+        else: 
+            to_ret = [random_minor_chord(note_in_octs_n(n[0], 4, 5)) for n in bass]
+        # check if we want to reverse the appregio
         if random.random() < reverse_chance:
             to_ret.reverse()
-        return to_ret
+        return replace_item_with_list(to_ret)
 
-    def _make_verse(self, verbose=False, notes_for_melody=60):
-        # Check key here(major or minor)
-        song = self._make_song_singles(notes_for_melody, metadata['USER_KEY_MAJOR'], verbose=verbose)
+    def _get_random_drums(self):
+        return [[random.choice(1,1,1,1,1,1,1,3)], [random.choice(1,1,3)], [random.choice(1,1,1,1,1,1,1,3)], [random.choice(1,1,3)]]
+
+    def _make_verse(self, root=metadata['ROOT'], verbose=False, notes_for_melody=8):
         bass = self._get_random_prog(major=metadata['USER_KEY_MAJOR'])
-        appreg = self._get_random_chord(bass, major=metadata['USER_KEY_MAJOR'])
-
+        song = self._make_song_singles(len(bass)*4, metadata['USER_KEY_MAJOR'], verbose=verbose)
+        appregio = self._get_random_chord(bass, major=metadata['USER_KEY_MAJOR'])
         if verbose:
             print(song)
             print(bass)
-            print('appreg:', appreg)
-            
-        # bass *= int(metadata['DEFAULT_TEMPO']/4)
-        # appreg *= int(metadata['DEFAULT_TEMPO']/4)
-        
-        return song,bass,appreg 
-        
-    def _make_bridge(self, verbose=False):
-        # TODO don't just make a verse out of a bridge
-        return self._make_verse(verbose=verbose)
+            print('appregio:', appregio)
 
-    def make_chunk(self, type='verse',verbose=False):
-        if type == 'verse':
-            return self._make_verse(verbose=verbose)
-        return self._make_bridge(verbose=verbose)
+        return Song(song=song,bass=bass,appregio=appregio) 
+        
+    def _make_bridge(self, root=metadata['ROOT'], verbose=False):
+        # TODO don't just make a verse out of a bridge
+        return self._make_verse(root=root, verbose=verbose)
 
     def _make_song_singles(self, note_count, major, verbose=False):
         song = []
@@ -145,7 +162,7 @@ class Chunk_Generator:
         song.append([metadata['ROOT']])
         i = 1
         while i < note_count:
-            rand_note = random_root() + song[0][0]
+            rand_note = random_root()
             if verbose:
                 print(str(i) + ':',str(rand_note % 12), major_notes(metadata['ROOT'] % 12))
             # if abs(song[-1][0] - rand_note) < next_note:
@@ -156,16 +173,6 @@ class Chunk_Generator:
             else:
                 i -= 1
             i += 1
-        return song
-
-    def make_bass(self, note_count):
-        song = []
-        notes_so_far = 0
-        
-        root = random_root()
-        bl = bassline(root)
-        for i in range(15):
-            song += bl
         return song
 
     def mutate_chunk(self, song): # has a MUTATE_CHANCE chance of giving back a randomized new song
