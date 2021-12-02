@@ -123,6 +123,11 @@ class Chunk_Generator:
             return random_major_prog(note_in_octs_l(get_random_letter(), 2, 3))
         return random_minor_prog(note_in_octs_l(get_random_letter(), 2, 3))
 
+    def _get_random_bridge(self, major=True):
+        if major:
+            return random_major_bridge(note_in_octs_l(get_random_letter(), 2, 3))
+        return random_minor_bridge(note_in_octs_l(get_random_letter(), 2, 3))
+
 
     def _get_random_chord(self, bass, major=True, reverse_chance=0.5):
         if major:
@@ -150,7 +155,14 @@ class Chunk_Generator:
         
     def _make_bridge(self, root=metadata['ROOT'], verbose=False):
         # TODO don't just make a verse out of a bridge
-        return self._make_verse(root=root, verbose=verbose)
+        bass = self._get_random_bridge(major=metadata['USER_KEY_MAJOR'])
+        song = self._make_song_singles(len(bass) * 4, metadata['USER_KEY_MAJOR'], verbose=verbose)
+        appregio = self._get_random_chord(bass, major=metadata['USER_KEY_MAJOR'])
+        if verbose:
+            print(song)
+            print(bass)
+            print('appregio:', appregio)
+        return Song(song=song, bass=bass, appregio=appregio)
 
     def _make_song_singles(self, note_count, major, verbose=False):
         song = []

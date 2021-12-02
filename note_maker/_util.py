@@ -2,13 +2,26 @@ import random
 from midiutil import MIDIFile
 
 class Units:
-    i   = 0
-    ii  = 2
-    iii = 4
-    iv  = 5
-    v   = 7
-    vi  = 9
-    vii = 11
+    major = {
+        'i'   : 0,
+        'ii'  : 2,
+        'iii' : 4,
+        'iv'  : 5,
+        'v'   : 7,
+        'vi'  : 9,
+        'vii' : 11,
+    }
+    minor = {
+        'i': 0,
+        'ii': 2,
+        'iii': 3,
+        'iv': 5,
+        'v': 7,
+        'vi': 8,
+        'vii': 10,
+    }
+
+
     
     notes = {
         'C': 0,
@@ -208,31 +221,45 @@ def random_major_prog(root):
 def random_minor_prog(root):
     return random.choice(minor_prog)(root)
 
-# progression pattern
-# TODO: Add more patterns
+def random_major_bridge(root):
+    return random.choice(major_bridge)(root)
+
+def random_minor_bridge(root):
+    return random.choice(minor_bridge)(root)
+
+# progression pattern for VERSE
 def i_vi_iii_v(root):
-    return [[root], [root+Units.vi], [root+Units.iii], [root+Units.v]]
+    return [[root], [root+Units.minor['vi']], [root+Units.minor['iii']], [root+Units.minor['v']]]
 
 def i_vi_iv_v(root):
-    return [[root], [root+Units.vi], [root+Units.iv], [root+Units.v]]
+    return [[root], [root+Units.minor['vi']], [root+Units.minor['iv']], [root+Units.minor['v']]]
 
 def i_v_vi_iv(root):
-    return[[root], [root+Units.v], [root+Units.vi], [root+Units.iv]]
+    return[[root], [root+Units.major['v']], [root+Units.major['vi']], [root+Units.major['iv']]]
 
 def i_v_vi_iii_iv_i_iv_v(root):
-    return[[root], [root+Units.v], [root+Units.vi], [root+Units.iii], [root+Units.iv], [root], [root+Units.iv], [root+Units.v]]
+    return[[root], [root+Units.major['v']], [root+Units.major['vi']], [root+Units.major['iii']], [root+Units.major['iv']], [root], [root+Units.major['iv']], [root+Units.major['v']]]
 
+
+# progression pattern for BRIDGE
 def vi_iii_iv_i_vi_ii_iv_v(root):
-    return[[root+Units.vi], [root+Units.iii], [root+Units.iv], [root], [root+Units.vi], [root+Units.ii], [root+Units.iv], [root+Units.v]]
+    return[[root+Units.major['vi']], [root+Units.major['iii']], [root+Units.major['iv']], [root], [root+Units.major['vi']], [root+Units.major['ii']], [root+Units.major['iv']], [root+Units.major['v']]]
 
 def vi_ii_vi_ii_iv_i_iv_v(root):
-    return [[root + Units.vi], [root + Units.ii], [root + Units.vi], [root+Units.ii], [root + Units.iv], [root], [root + Units.iv], [root + Units.v]]
+    return [[root + Units.major['vi']], [root + Units.major['ii']], [root + Units.major['vi']], [root+Units.major['ii']], [root + Units.major['iv']], [root], [root + Units.major['iv']], [root + Units.major['v']]]
+
+def iv_vi_iii_vi_iv_vi_vii_vii(root):
+    return [[root+Units.minor['iv']], [root+Units.minor['vi']], [root+Units.minor['iii']], [root+Units.minor['vi']], [root+Units.minor['iv']], [root+Units.minor['vi']], [root+Units.minor['vii']], [root+Units.minor['vii']]]
+
+def vii_v_iii_vi_vii_iii_iv_v(root):
+    return[[root+Units.minor['vii']], [root+Units.minor['v']], [root+Units.minor['iii']], [root+Units.minor['vi']], [root+Units.minor['vii']], [root+Units.minor['iii']], [root+Units.minor['iv']], [root+Units.minor['v']]]
 
 minor_prog = [i_vi_iii_v, i_vi_iv_v]
 major_prog = [i_v_vi_iv, i_v_vi_iii_iv_i_iv_v]
 
 # TODO: bridge_prog
-major_bridge= [vi_iii_iv_i_vi_ii_iv_v, vi_ii_vi_ii_iv_i_iv_v]
+major_bridge = [vi_iii_iv_i_vi_ii_iv_v, vi_ii_vi_ii_iv_i_iv_v]
+minor_bridge = [iv_vi_iii_vi_iv_vi_vii_vii, vii_v_iii_vi_vii_iii_iv_v]
 
 def get_random_letter():
     return random.choice(list(note_names()))
