@@ -284,3 +284,17 @@ def user_chose_major():
     while key not in ['major', 'minor']:
         key = input('Please select a key for your song.\nEnter \'major\' or \'minor\': ').lower()
     return key == 'major'
+
+def user_choose_tempo():
+    print('A tempo is required to produce a song with your desired pace.')
+    print('Please choose "slow", "medium", "fast", or type in a number for a particular tempo.')
+    print('This number is generally between 40 and 120.')
+    valid = False
+    while not valid:
+        tempo = input('Please type your tempo here: ')
+        if tempo.isnumeric() and int(tempo) > 40:
+            return int(tempo)
+        elif tempo.lower() in ['slow', 'medium', 'fast']:
+            return tempo
+    return tempo
+    
