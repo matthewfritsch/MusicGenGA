@@ -2,24 +2,23 @@ from midiutil import MIDIFile
 import random
 from _util import *
 
-# current tempo options
-tempos = {
-    'fast': metadata['TEMPO_FAST'], 
-    'medium': metadata['TEMPO_MED'], 
-    'slow': metadata['TEMPO_SLOW'], 
-    }
-
-
 # metadata that holds basic info about the song
 metadata = {
     'MELODY_NOTES_PB' : 2 ** random.randint(1,3),
     'MUTATE_CHANCE': 0.5,
     'ROOT': random_root(),
-    'TEMPO_SLOW' : random.randint(40,60),
-    'TEMPO_MED' : random.randint(60,90),
-    'TEMPO_FAST' : random.randint(90, 120),
+    'TEMPO_SLOW' : random.randint(40,120),
+    'TEMPO_MED' : random.randint(120,160),
+    'TEMPO_FAST' : random.randint(160, 240),
     'TEMPO': -1,
     'USER_KEY_MAJOR': True,
+}
+
+# current tempo options
+tempos = {
+    'fast': metadata['TEMPO_FAST'], 
+    'medium': metadata['TEMPO_MED'], 
+    'slow': metadata['TEMPO_SLOW'],
 }
 
 class Track:
