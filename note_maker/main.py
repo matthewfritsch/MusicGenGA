@@ -2,12 +2,6 @@
 if __name__ == '__main__':
     from _util import *
     from ga import *
-    
-    tempos = {
-        'fast': metadata['TEMPO_FAST'], 
-        'medium': metadata['TEMPO_MED'], 
-        'slow': metadata['TEMPO_SLOW'], 
-        }
 
     key_in_major = user_chose_major()
     tempo = user_choose_tempo()

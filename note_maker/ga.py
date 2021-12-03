@@ -2,6 +2,14 @@ from midiutil import MIDIFile
 import random
 from _util import *
 
+# current tempo options
+tempos = {
+    'fast': metadata['TEMPO_FAST'], 
+    'medium': metadata['TEMPO_MED'], 
+    'slow': metadata['TEMPO_SLOW'], 
+    }
+
+
 # metadata that holds basic info about the song
 metadata = {
     'MELODY_NOTES_PB' : 2 ** random.randint(1,3),
