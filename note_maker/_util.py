@@ -21,8 +21,6 @@ class Units:
         'vii': 10,
     }
 
-
-    
     notes = {
         'C': 0,
         'C#': 1,
@@ -38,26 +36,25 @@ class Units:
         'B': 11,
     }
 
-
 # Returns the MIDI note number for the given note name and octave
 # Letter options are C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 # Octaves range from 0 to 10
 
 # possible notes given the root for any major
 def major_notes(root):
-    return [root, root + 2, root + 4, root + 5, root + 7, root + 9, root + 11]
+    return [root, (root + 2)%12, (root + 4)%12, (root + 5)%12, (root + 7)%12, (root + 9)%12, (root + 11)%12]
 
 def minor_harmonic_notes(root):
-    return [root, root + 2, root + 3, root + 5, root + 7, root + 8, root + 11]
+    return [root, (root + 2)%12, (root + 3)%12, (root + 5)%12, (root + 7)%12, (root + 8)%12, (root + 11)%12]
 
 def minor_notes(root):
-    return [root, root + 2, root + 3, root + 5, root + 7, root + 8, root + 10]
+    return [root, (root + 2)%12, (root + 3)%12, (root + 5)%12, (root + 7)%12, (root + 8)%12, (root + 10)%12]
 
 def note(Letter, Octave):
     return Units.notes.get(Letter) + (Octave * 12)
 
 def random_root():
-    return random.randint(36, 79)
+    return random.randint(36, 96)
 
 def note_names():
     return Units.notes.keys()
@@ -255,7 +252,7 @@ def vii_v_iii_vi_vii_iii_iv_v(root):
     return[[root+Units.minor['vii']], [root+Units.minor['v']], [root+Units.minor['iii']], [root+Units.minor['vi']], [root+Units.minor['vii']], [root+Units.minor['iii']], [root+Units.minor['iv']], [root+Units.minor['v']]]
 
 minor_prog = [i_vi_iii_v, i_vi_iv_v]
-major_prog = [i_v_vi_iv, i_v_vi_iii_iv_i_iv_v]
+major_prog = [i_v_vi_iv, ]
 
 # TODO: bridge_prog
 major_bridge = [vi_iii_iv_i_vi_ii_iv_v, vi_ii_vi_ii_iv_i_iv_v]

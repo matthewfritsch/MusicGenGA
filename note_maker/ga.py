@@ -7,9 +7,9 @@ metadata = {
     'MELODY_NOTES_PB' : 2 ** random.randint(1,3),
     'MUTATE_CHANCE': 0.5,
     'ROOT': random_root(),
-    'TEMPO_SLOW' : random.randint(40,120),
-    'TEMPO_MED' : random.randint(120,160),
-    'TEMPO_FAST' : random.randint(160, 240),
+    'TEMPO_SLOW' : random.randint(40,90),
+    'TEMPO_MED' : random.randint(90,140),
+    'TEMPO_FAST' : random.randint(140,190),
     'TEMPO': -1,
     'USER_KEY_MAJOR': True,
 }
@@ -67,7 +67,6 @@ class Song_Generator:
         metadata['MELODY_NOTES_PB'] = 2 * random.randint(8, 16)
 
     def create_MIDI(self, verse_list, bridge_list=[], filename='my_song.mid'):
-        print(metadata['TEMPO'])
         final_song = self._create_song_structure(verse_list, bridge_list)
         final_MIDI = self.generate_MIDI(final_song)
         self.write_song_to_file(final_MIDI, filename)
@@ -77,10 +76,10 @@ class Song_Generator:
         structure = [
             verse_list[0],
             verse_list[0],
-            verse_list[0],
-            verse_list[0],
-            # bridge_list[0]
-            ]
+            # verse_list[0],
+            # verse_list[0],
+            bridge_list[0]
+        ]
 
         final_melody = []
         final_bass = []
@@ -165,6 +164,9 @@ class Song_Generator:
 
 class Chunk_Generator:
 
+    def __init__(self, tempo):
+        self.tempo = tempo
+
     # The function for generating an individual chunk of song
     def make_chunk(self, root=metadata['ROOT'], type='verse',verbose=False):
         if type == 'verse':
@@ -183,7 +185,8 @@ class Chunk_Generator:
         if verbose:
             print('melody: ', melody)
             print('bass: ', bass)
-            print('appregio:', appregio)
+            print('appregio: ', appregio)
+            print('tempo: ', self.tempo)
 
         bass_track = BassTrack(bass)
         melody_track = MelodyTrack(melody)
@@ -218,25 +221,51 @@ class Chunk_Generator:
 
     def _make_melody(self, bass_count, major, verbose=False):
         song = []
-        next_note = random.randint(4, 9)
-        if verbose:
+
+        next_note_distances = [
+            random.randint(1,2),
+            random.randint(3,7),
+            random.randint(8,11), 
+            # random.randint(11,12)
+        ]
+        # ndweights = [5,3,1]
+        ndweights = [1,5,1]
+
+        next_note = random.choices(next_note_distances, weights=ndweights)[0]
+        # if verbose:
+        if True:
             print(next_note)
-            # print(note_count)
-            print(major)
+            print(self.tempo)
+            print(metadata['ROOT'])
+            # print(major)
+
+        melody_counts = [2,4,8]
+        mcweights = [4,6,1]
+        if self.tempo > 90:
+            mcweights[-1] = 0
+            mcweights[-2] = 2
+        if self.tempo > 140:
+            mcweights[-2] = 1
+
+        last_added = 0
 
         for b_note in range(bass_count):
             song.append([])
-            note_count = 2 ** random.randint(1, 3)
+
+# abs(rand_note-song[b_note][-1][0]) <= next_note) or not len(song[b_note])
+
+            note_count = random.choices(melody_counts, weights=mcweights)[0]
             i = 1
             while i <= note_count:
                 rand_note = random_root()
+                if not last_added:
+                    last_added = rand_note
                 if verbose:
                     print(str(i) + ':',str(rand_note % 12), major_notes(metadata['ROOT'] % 12))
-                # if abs(song[-1][0] - rand_note) < next_note:
-                if major and rand_note % 12 in major_notes(metadata['ROOT'] % 12):
-                    song[b_note].append([rand_note])
-                elif not major and rand_note % 12 in minor_notes(metadata['ROOT'] % 12):
-                    song[b_note].append([rand_note])
+                if major and rand_note % 12 in major_notes(metadata['ROOT'] % 12) and abs(rand_note - last_added) <= next_note:
+                        song[b_note].append([rand_note])
+                elif not major and rand_note % 12 in minor_notes(metadata['ROOT'] % 12) and abs(rand_note - last_added) <= next_note:
+                        song[b_note].append([rand_note])
                 else:
                     i -= 1
                 i += 1
@@ -247,31 +276,3 @@ class Chunk_Generator:
             return make_song_singles(len(song))
         return song
 
-
-def checkFitness(song):
-    #song is a 2D array of chords
-    #checking for good closer chords
-    if len(song[-1])==3:
-        if song[-1][0] % 12 == G and song[-1][1] % 12 == B and song[-1][2] % 12 == D:
-            pass
-        if song[-1][0] % 12 == F and song[-1][1] % 12 == A and song[-1][2] % 12 == C:
-            pass
-
-
-# all appreg should have 4 or 3 so it doesn't sound awful
-
-'''
-BASIC STRUCTURE:
-Song = verse + bridge
-    verse: 
-        prog1
-        melody1
-    bridge:
-        prog2
-        melody2
-'''
-
-# TODO: add drums (1,1,1,3?)
-# TODO: generate singular chunks and fit them together
-# TODO: calculate fitness for a chunk
-# TODO: calculate fitness for the connection of two chunks, or a whole song

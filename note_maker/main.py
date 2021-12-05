@@ -1,14 +1,8 @@
-def make_bridges(bridge_count):
-    bridges = []
-    for bridge in range(bridge_count):
-        bridges.append(cg.make_chunk(type='bridge',verbose=False))
-    return bridges
+def make_bridge():
+    return [cg.make_chunk(type='bridge',verbose=False)]
 
-def make_verses(verse_count):
-    verses = []
-    for verse in range(verse_count):
-        verses.append(cg.make_chunk(type='verse',verbose=False))
-    return verses
+def make_verse():
+    return [cg.make_chunk(type='verse',verbose=False)]
 
 if __name__ == '__main__':
     from _util import *
@@ -20,22 +14,22 @@ if __name__ == '__main__':
         tempo = tempos[tempo]
 
     sg = Song_Generator(key_in_major, tempo)
-    cg = Chunk_Generator()
+    cg = Chunk_Generator(tempo)
 
     use_this_song = False
-    verse_count = 2
-    bridge_count = 2
+    verse_count = 4
+    bridge_count = 4
     filename = 'my_song.mid'
-    verses = []
-    bridges = []
+    verse = []
+    bridge = []
 
     while not use_this_song:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Now generating a new song...')
 
-        bridges = make_bridges(bridge_count)
-        verses = make_verses(verse_count)
-        sg.create_MIDI(verse_list=verses, bridge_list=bridges, filename=filename)
+        bridge = make_bridge()
+        verse = make_verse()
+        sg.create_MIDI(verse_list=verse, bridge_list=bridge, filename=filename)
        
         print('Done!')
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -44,26 +38,19 @@ if __name__ == '__main__':
 
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     filename_format = filename.split('.mid')
-    for i in range(verse_count-1):
+
+    for i in range(bridge_count):
         new_filename = filename_format[0] + str(i+1) + '.mid'
         print('Creating', new_filename)
-        new_verses = verses
-        for j in range(len(verses)):
-            if i == j:
-                continue
-            new_verses[j] = cg.make_chunk(type='verse',verbose=False)
-        new_bridges = make_bridges(bridge_count)
-        sg.create_MIDI(verse_list=verses, bridge_list=bridges, filename=new_filename)
-
-    for i in range(bridge_count-1):
-        new_filename = filename_format[0] + str(i+j+1) + '.mid'
+        new_verse = make_verse()
+        new_bridge = bridge
+        sg.create_MIDI(verse_list=new_verse, bridge_list=new_bridge, filename=new_filename)
+    
+    for j in range(verse_count):
+        new_filename = filename_format[0] + str(i+j+2) + '.mid'
         print('Creating', new_filename)
-        new_verses = make_verses(verse_count)
-        new_bridges = bridges
-        for j in range(len(bridges)):
-            if i == j:
-                continue
-            new_bridges[j] = cg.make_chunk(type='bridge',verbose=False)
-        sg.create_MIDI(verse_list=verses, bridge_list=bridges, filename=new_filename)
+        new_verse = verse
+        new_bridge = make_bridge()
+        sg.create_MIDI(verse_list=new_verse, bridge_list=new_bridge, filename=new_filename)
 
     print('Done!')
