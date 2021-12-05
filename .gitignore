@@ -6,3 +6,6 @@ note_maker/library_notes.txt
 note_maker/*.mid
 .idea
 .idea/*
+note_maker/build/*
+note_maker/dist/*
+note_maker/main.spec

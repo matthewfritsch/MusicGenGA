@@ -66,20 +66,21 @@ class Song_Generator:
         metadata['TEMPO'] = tempo
 
     def create_MIDI(self, verse_list, bridge_list=[], filename='my_song.mid'):
-        print(metadata['TEMPO'])
         final_song = self._create_song_structure(verse_list, bridge_list)
         final_MIDI = self.generate_MIDI(final_song)
         self.write_song_to_file(final_MIDI, filename)
 
     def _create_song_structure(self, verse_list, bridge_list):
         # e.g verse1*4, bridge
+
         structure = [
             verse_list[0],
             verse_list[0],
             verse_list[0],
             verse_list[0],
-            # bridge_list[0]
-            ]
+            bridge_list[0],
+            bridge_list[0],
+        ]
 
         final_melody = []
         final_bass = []
@@ -226,7 +227,6 @@ class Chunk_Generator:
             rand_note = random_root()
             if verbose:
                 print(str(i) + ':',str(rand_note % 12), major_notes(metadata['ROOT'] % 12))
-            # if abs(song[-1][0] - rand_note) < next_note:
             if major and rand_note % 12 in major_notes(metadata['ROOT'] % 12):
                 song.append([rand_note])
             elif not major and rand_note % 12 in minor_notes(metadata['ROOT'] % 12):
@@ -243,29 +243,8 @@ class Chunk_Generator:
 
 
 def checkFitness(song):
-    #song is a 2D array of chords
-    #checking for good closer chords
     if len(song[-1])==3:
         if song[-1][0] % 12 == G and song[-1][1] % 12 == B and song[-1][2] % 12 == D:
             pass
         if song[-1][0] % 12 == F and song[-1][1] % 12 == A and song[-1][2] % 12 == C:
             pass
-
-
-# all appreg should have 4 or 3 so it doesn't sound awful
-
-'''
-BASIC STRUCTURE:
-Song = verse + bridge
-    verse: 
-        prog1
-        melody1
-    bridge:
-        prog2
-        melody2
-'''
-
-# TODO: add drums (1,1,1,3?)
-# TODO: generate singular chunks and fit them together
-# TODO: calculate fitness for a chunk
-# TODO: calculate fitness for the connection of two chunks, or a whole song

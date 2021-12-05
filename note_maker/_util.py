@@ -298,3 +298,14 @@ def user_choose_tempo():
             return tempo
     return tempo
     
+def user_likes_song(filename):
+    answer = '-1'
+
+    print('The song has been saved as', filename)
+    print('Do you want more songs like this?')
+    while answer not in ['y','n','']:
+        answer = input('Enter here (Y/n): ').lower()
+        print(answer)
+    if answer == 'n':
+        return False
+    return True
