@@ -112,7 +112,7 @@ def suspended_second(root):
     return [root, root + 1, root + 7, root + 12]
 
 common_chords = [major_triad, minor_triad, major_seventh, minor_seventh, major_sixth, minor_sixth, dominant_seventh, diminished_seventh, augmented_seventh, suspended_fourth, suspended_second]
-major_chords = [major_triad, major_sixth, major_seventh, dominant_seventh, augmented_seventh, suspended_fourth, suspended_second]
+major_chords = [major_triad, major_sixth, major_seventh, dominant_seventh]
 minor_chords = [minor_triad, minor_sixth, minor_seventh, diminished_seventh]
 
 def major_seventh_suspended(root):
@@ -224,35 +224,60 @@ def random_major_bridge(root):
 def random_minor_bridge(root):
     return random.choice(minor_bridge)(root)
 
-# progression pattern for VERSE
+# Minor progression pattern for VERSE
 def i_vi_iii_v(root):
     return [[root], [root+Units.minor['vi']], [root+Units.minor['iii']], [root+Units.minor['v']]]
+
+def i_vi_iii_vii(root):
+    return [[root], [root+Units.minor['vi']], [root+Units.minor['iii']], [root+Units.minor['vii']]]
+
+def i_vi_iii_iv(root):
+    return [[root], [root+Units.minor['vi']], [root+Units.minor['iii']], [root+Units.minor['iv']]]
+
+def i_iv_iii_vi(root):
+    return [[root], [root+Units.minor['iv']], [root+Units.minor['iii']], [root+Units.minor['vi']]]
 
 def i_vi_iv_v(root):
     return [[root], [root+Units.minor['vi']], [root+Units.minor['iv']], [root+Units.minor['v']]]
 
+# Major progression pattern for VERSE
 def i_v_vi_iv(root):
     return[[root], [root+Units.major['v']], [root+Units.major['vi']], [root+Units.major['iv']]]
+
+def i_iv_vi_v(root):
+    return [[root], [root + Units.major['iv']], [root + Units.major['vi']], [root + Units.major['v']]]
+
+def i_iv_v_v(root):
+    return [[root], [root + Units.major['iv']], [root + Units.major['v']], [root + Units.major['v']]]
+
+def i_ii_iv_i(root):
+    return [[root], [root + Units.major['ii']], [root + Units.major['iv']], [root]]
+
+def vi_i_vi_i(root):
+    return[[root+Units.major['vi']], [root], [root+Units.major['vi']], [root]]
+
+def vi_i_v_iv(root):
+    return [[root+Units.major['vi']], [root], [root+Units.major['v']], [root+Units.major['iv']]]
 
 def i_v_vi_iii_iv_i_iv_v(root):
     return[[root], [root+Units.major['v']], [root+Units.major['vi']], [root+Units.major['iii']], [root+Units.major['iv']], [root], [root+Units.major['iv']], [root+Units.major['v']]]
 
-
-# progression pattern for BRIDGE
+# MAJOR progression pattern for BRIDGE
 def vi_iii_iv_i_vi_ii_iv_v(root):
     return[[root+Units.major['vi']], [root+Units.major['iii']], [root+Units.major['iv']], [root], [root+Units.major['vi']], [root+Units.major['ii']], [root+Units.major['iv']], [root+Units.major['v']]]
 
 def vi_ii_vi_ii_iv_i_iv_v(root):
     return [[root + Units.major['vi']], [root + Units.major['ii']], [root + Units.major['vi']], [root+Units.major['ii']], [root + Units.major['iv']], [root], [root + Units.major['iv']], [root + Units.major['v']]]
 
+# MINOR progression pattern for BRIDGE
 def iv_vi_iii_vi_iv_vi_vii_vii(root):
     return [[root+Units.minor['iv']], [root+Units.minor['vi']], [root+Units.minor['iii']], [root+Units.minor['vi']], [root+Units.minor['iv']], [root+Units.minor['vi']], [root+Units.minor['vii']], [root+Units.minor['vii']]]
 
 def vii_v_iii_vi_vii_iii_iv_v(root):
     return[[root+Units.minor['vii']], [root+Units.minor['v']], [root+Units.minor['iii']], [root+Units.minor['vi']], [root+Units.minor['vii']], [root+Units.minor['iii']], [root+Units.minor['iv']], [root+Units.minor['v']]]
 
-minor_prog = [i_vi_iii_v, i_vi_iv_v]
-major_prog = [i_v_vi_iv, ]
+minor_prog = [i_vi_iii_v, i_vi_iii_vii, i_vi_iii_iv, i_iv_iii_vi, i_vi_iv_v]
+major_prog = [i_v_vi_iv, i_iv_vi_v, i_iv_v_v, i_ii_iv_i, vi_i_v_iv]
 
 # TODO: bridge_prog
 major_bridge = [vi_iii_iv_i_vi_ii_iv_v, vi_ii_vi_ii_iv_i_iv_v]
@@ -306,3 +331,8 @@ def user_likes_song(filename):
     if answer == 'n':
         return False
     return True
+def song_structure(v, b):
+    structure = [[v[0], v[0], b[0]],
+                 [v[0], v[0], v[0], v[0], b[0], b[0]],
+                 [b[0]]]
+    return random.choice(structure)

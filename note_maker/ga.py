@@ -73,13 +73,7 @@ class Song_Generator:
 
     def _create_song_structure(self, verse_list, bridge_list):
         # e.g verse1*4, bridge
-        structure = [
-            verse_list[0],
-            verse_list[0],
-            # verse_list[0],
-            # verse_list[0],
-            bridge_list[0]
-        ]
+        structure = song_structure(verse_list, bridge_list)
 
         final_melody = []
         final_bass = []
